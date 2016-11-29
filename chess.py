@@ -70,6 +70,8 @@ class Board:
 			(7,6): Pawn((7,6), 1, False, 'Black', [(7,5)]),
 			(7,7): Rook((7,7), 6, False, 'Black', [])
 		}
+	def __getitem__(self,key):
+		return self.board[key]
 
 class Piece(object):
 
@@ -118,7 +120,13 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if self.has_moved and board[(self.location[0],self.location[1] + 2)] == None:
-				moves.push((self.location[0],self.location[1] + 2))
+			if not self.has_moved and board[(self.location[0],self.location[1] + 2)] == None:
+				moves.append((self.location[0],self.location[1] + 2))
 			if board[(self.location[0],self.location[1] + 1)] == None:
-				moves.push((self.location[0],self.location[1] + 1))
+				moves.append((self.location[0],self.location[1] + 1))
+		else:
+			if not self.has_moved and board[(self.location[0],self.location[1] - 2)] == None:
+				moves.append((self.location[0],self.location[1] - 2))
+			if board[(self.location[0],self.location[1] - 1)] == None:
+				moves.append((self.location[0],self.location[1] - 1))
+		return moves
