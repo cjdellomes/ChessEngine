@@ -118,7 +118,7 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if self.has_moved && board[(self.location[0],self.location[1] + 2)] == None:
+			if self.has_moved and board[(self.location[0],self.location[1] + 2)] == None:
 				moves.push((self.location[0],self.location[1] + 2))
 			if board[(self.location[0],self.location[1] + 1)] == None:
 				moves.push((self.location[0],self.location[1] + 1))
