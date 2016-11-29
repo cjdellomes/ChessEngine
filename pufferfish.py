@@ -1,6 +1,6 @@
 import chess
-def greeting():
 
+def greeting():
 	name = "Pufferfish"
 	description = "Dankest fish in the sea!"
 	return ("Hello I am %s, the %s" % (name,description))
