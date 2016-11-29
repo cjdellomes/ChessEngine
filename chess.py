@@ -129,13 +129,21 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if not self.has_moved and board[(x, y + 2)] == None and board[(x, y + 2)] != LIMIT:
-				moves.append((x, y + 2))
 			if board[(x, y + 1)] == None and board[(x, y + 1)] != LIMIT:
 				moves.append((x, y + 1))
+				if not self.has_moved and board[(x, y + 2)] == None:
+					moves.append((x, y + 2))
+			if board[(x + 1, y + 1)] != LIMIT and board[(x + 1, y + 1)] != None and board[(x + 1, y + 1)].color == "Black":
+				moves.append((x + 1, y + 1))
+			if board[(x - 1, y + 1)] != LIMIT and board[(x - 1, y + 1)] != None and board[(x - 1, y + 1)].color == "Black":
+				moves.append((x - 1, y + 1))
 		else:
-			if not self.has_moved and board[(x, y - 2)] == None and board[(x, y - 2)] != LIMIT:
-				moves.append((x, y - 2))
-			if board[(x, y - 1)] == None and board[(x, y - 1)] != LIMIT:
+			if board[(x, y - 1)] == None:
 				moves.append((x , y - 1))
+				if not self.has_moved and board[(x, y - 2)] == None:
+					moves.append((x, y - 2))
+			if board[(x - 1, y - 1)] != LIMIT and board[(x - 1, y - 1)] != None and board[(x - 1, y - 1)].color == "White":
+				moves.append((x - 1, y - 1))
+			if board[(x + 1, y - 1)] != LIMIT and board[(x + 1, y - 1)] != None and board[(x + 1, y - 1)].color == "White":
+				moves.append((x + 1, y - 1))
 		return moves
