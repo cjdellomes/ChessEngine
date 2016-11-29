@@ -10,6 +10,7 @@ def main():
 	board = chess.Board()
 	print(board[(0,1)].calculate_moves(board))
 	print(board[(0,6)].calculate_moves(board))
+	print(board[(200,300)])
 
 
 if __name__ == "__main__":

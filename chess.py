@@ -1,3 +1,5 @@
+from collections import defaultdict
+LIMIT = "Out of bounds"
 class Board:
 
 	def __init__(self, board):
@@ -70,8 +72,13 @@ class Board:
 			(7,6): Pawn((7,6), 1, False, 'Black', [(7,5)]),
 			(7,7): Rook((7,7), 6, False, 'Black', [])
 		}
+
 	def __getitem__(self,key):
+		self.board.setdefault(key,LIMIT)
 		return self.board[key]
+
+	def __setitem__(self,key,value):
+		self.board[key] = value
 
 class Piece(object):
 
@@ -122,13 +129,13 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if not self.has_moved and board[(x, y + 2)] == None:
+			if not self.has_moved and board[(x, y + 2)] == None and board[(x, y + 2)] != LIMIT:
 				moves.append((x, y + 2))
-			if board[(x, y + 1)] == None:
+			if board[(x, y + 1)] == None and board[(x, y + 1)] != LIMIT:
 				moves.append((x, y + 1))
 		else:
-			if not self.has_moved and board[(x, y - 2)] == None:
+			if not self.has_moved and board[(x, y - 2)] == None and board[(x, y - 2)] != LIMIT:
 				moves.append((x, y - 2))
-			if board[(x, y - 1)] == None:
+			if board[(x, y - 1)] == None and board[(x, y - 1)] != LIMIT:
 				moves.append((x , y - 1))
 		return moves

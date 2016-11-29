@@ -23,6 +23,19 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(piece.color, "Black")
         self.assertEqual(piece.calculate_moves(board), [(0,4),(0,5)])
 
+    def test_white_pawn_limit(self):
+        board = chess.Board()
+        location = (7,7)
+        piece = chess.Pawn(location, 1, False, 'White', [])
+        board[(location)] = piece
+        self.assertEqual(piece.calculate_moves(board),[])
+
+    def test_black_pawn_limit(self):
+        board = chess.Board()
+        location = (0,0)
+        piece = chess.Pawn(location, 1, False, 'Black', [])
+        board[(location)] = piece
+        self.assertEqual(piece.calculate_moves(board),[])
 
 if __name__ == '__main__':
     unittest.main()
