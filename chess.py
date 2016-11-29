@@ -71,7 +71,7 @@ class Board:
 			(7,7): Rook((7,7), 6, False, 'Black', [])
 		}
 
-class Piece:
+class Piece(object):
 
 	def __init__(self, location = None, value = None, has_moved = None, color = None, moves = []):
 		self.location = location
@@ -82,37 +82,37 @@ class Piece:
 
 class King(Piece):
 
-	def __init__(self, in_check = False, in_checkmate = False):
-		super(King, self).__init__()
+	def __init__(self, in_check = False, in_checkmate = False, *args):
+		super(King, self).__init__(*args)
 		self.in_check = in_check
 		self.in_checkmate = in_checkmate
 
 class Queen(Piece):
 
-	def __init__(self):
-		super(Queen, self).__init__()
+	def __init__(self, *args):
+		super(Queen, self).__init__(*args)
 
 
 
 class Rook(Piece):
 
-	def __init__(self):
-		super(Rook, self).__init__()
+	def __init__(self, *args):
+		super(Rook, self).__init__(*args)
 
 class Bishop(Piece):
 
-	def __init__(self):
-		super(Bishop, self).__init__()
+	def __init__(self, *args):
+		super(Bishop, self).__init__(*args)
 
-class Knigth(Piece):
+class Knight(Piece):
 
-	def __init__(self):
-		super(Knight, self).__init__()
+	def __init__(self, *args):
+		super(Knight, self).__init__(*args)
 
 class Pawn(Piece):
 
-	def __init__(self):
-		super(Pawn, self).__init__()
+	def __init__(self, *args):
+		super(Pawn, self).__init__(*args)
 
 	def calculate_moves(self, board):
 		moves = []
