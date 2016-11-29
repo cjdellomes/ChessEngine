@@ -91,6 +91,8 @@ class Queen(Piece):
 	def __init__(self):
 		super(Queen, self).__init__()
 
+
+
 class Rook(Piece):
 
 	def __init__(self):
@@ -110,3 +112,12 @@ class Pawn(Piece):
 
 	def __init__(self):
 		super(Pawn, self).__init__()
+
+	def calculate_moves(self, board):
+		moves = []
+		#if ! self.has_moved:
+		if self.color == "White"
+			if self.has_moved && board[(self.location[0],self.location[1] + 2)] == None:
+				moves.push((self.location[0],self.location[1] + 2))
+			if board[(self.location[0],self.location[1] + 1)] == None:
+				moves.push((self.location[0],self.location[1] + 1))
