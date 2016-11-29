@@ -117,16 +117,18 @@ class Pawn(Piece):
 		super(Pawn, self).__init__(*args)
 
 	def calculate_moves(self, board):
+		x = self.location[0]
+		y = self.location[1]
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if not self.has_moved and board[(self.location[0],self.location[1] + 2)] == None:
-				moves.append((self.location[0],self.location[1] + 2))
-			if board[(self.location[0],self.location[1] + 1)] == None:
-				moves.append((self.location[0],self.location[1] + 1))
+			if not self.has_moved and board[(x, y + 2)] == None:
+				moves.append((x, y + 2))
+			if board[(x, y + 1)] == None:
+				moves.append((x, y + 1))
 		else:
-			if not self.has_moved and board[(self.location[0],self.location[1] - 2)] == None:
-				moves.append((self.location[0],self.location[1] - 2))
-			if board[(self.location[0],self.location[1] - 1)] == None:
-				moves.append((self.location[0],self.location[1] - 1))
+			if not self.has_moved and board[(x, y - 2)] == None:
+				moves.append((x, y - 2))
+			if board[(x, y - 1)] == None:
+				moves.append((x , y - 1))
 		return moves
