@@ -8,7 +8,7 @@ class Board:
 			(0,0): Rook((0,0), 5, False, 'White', []),
 			(0,1): Pawn((0,1), 1, False, 'White', [(0,2)]),
 			(0,2): None,
-			(0,3: None,
+			(0,3): None,
 			(0,4): None,
 			(0,5): None,
 			(0,6): Pawn((0,6), 1, False, 'Black', [(0,5)]),
