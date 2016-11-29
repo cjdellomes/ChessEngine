@@ -7,6 +7,7 @@ def greeting():
 
 def main():
 	print(greeting())
+	board = chess.Board()
 
 if __name__ == "__main__":
 	main()
