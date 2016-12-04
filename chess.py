@@ -118,6 +118,12 @@ class Knight(Piece):
 	def __init__(self, *args):
 		super(Knight, self).__init__(*args)
 
+	def calculate_moves(self, board):
+		x = self.location[0]
+		y = self.location[1]
+		moves = []
+
+
 class Pawn(Piece):
 
 	def __init__(self, *args):
@@ -129,7 +135,7 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if board[(x, y + 1)] == None and board[(x, y + 1)] != LIMIT:
+			if board[(x, y + 1)] == None:
 				moves.append((x, y + 1))
 				if not self.has_moved and board[(x, y + 2)] == None:
 					moves.append((x, y + 2))
