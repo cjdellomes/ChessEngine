@@ -119,6 +119,69 @@ class Bishop(Piece):
 	def __init__(self, *args):
 		super(Bishop, self).__init__(*args)
 
+	def calculate_moves(self, board):
+		x,y = self.location[0], self.location[1]
+		moves = []
+		enemy = "Black" if self.color == "White" else "White"
+		xcounter, ycounter = self.location[0], self.location[1]
+		upper_left, upper_right, lower_right, lower_left = False, False, False, False
+		while not upper_left:
+			space = board.get((xcounter - 1, ycounter + 1), LIMIT)
+			if space == None:
+				xcounter -= 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				upper_left = True
+			else:
+				upper_left = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not upper_right:
+			space = board.get((xcounter + 1, ycounter + 1), LIMIT)
+			if space == None:
+				xcounter += 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+				upper_right = True
+			else:
+				upper_right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not lower_right:
+			space = board.get((xcounter + 1, ycounter - 1), LIMIT)
+			if space == None:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				lower_right = True
+			else:
+				lower_right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not lower_left:
+			space = board.get((xcounter - 1, ycounter - 1), LIMIT)
+			if space == None:
+				xcounter -= 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter -= 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				lower_left = True
+			else:
+				lower_left = True
+		return moves
+
 class Knight(Piece):
 
 	def __init__(self, *args):
@@ -129,14 +192,7 @@ class Knight(Piece):
 		y = self.location[1]
 		moves = []
 		enemy = "Black" if self.color == "White" else "White"
-		spc1 = (x-2,y+1)
-		spc2 = (x+2, y-1)
-		spc3 = (x+1, y-2)
-		spc4 = (x-1, y+2)
-		spc5 = (x+2, y+1)
-		spc6 = (x+1, y+2)
-		spc7 = (x-2, y-1)
-		spc8 = (x-1, y-2)
+		spc1, spc2, spc3, spc4, spc5,spc6, spc7, spc8 = (x-2,y+1), (x+2, y-1), (x+1, y-2), (x-1, y+2), (x+2, y+1), (x+1, y+2), (x-2, y-1), (x-1, y-2) 
 		if board[spc1] == None or board[spc1].color == enemy:
 			moves.append(spc1)
 		if board[spc2] == None or board[spc2].color == enemy:
