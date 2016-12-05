@@ -107,12 +107,182 @@ class Queen(Piece):
 	def __init__(self, *args):
 		super(Queen, self).__init__(*args)
 
-
+	def calculate_moves(self, board):
+		#Copied and pasted from rook
+		x,y = self.location[0], self.location[1]
+		moves = []
+		enemy = "Black" if self.color == "White" else "White"
+		up, down, left, right = False, False, False, False
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not up:
+			space = board.get((x,ycounter + 1), LIMIT)
+			if space == None:
+				ycounter += 1
+				moves.append((x,ycounter))
+			elif space != LIMIT and space.color == enemy:
+				ycounter += 1
+				moves.append((x,ycounter))
+				up = True
+			else:
+				up = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not down:
+			space = board.get((x,ycounter - 1), LIMIT)
+			if space == None:
+				ycounter -= 1
+				moves.append((x,ycounter))
+			elif space != LIMIT and space.color == enemy:
+				ycounter -= 1
+				moves.append((x,ycounter))
+				down = True
+			else:
+				down = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not right:
+			space = board.get((xcounter + 1,y), LIMIT)
+			if space == None:
+				xcounter += 1
+				moves.append((xcounter,y))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				moves.append((xcounter,y))
+				right = True
+			else:
+				right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not left:
+			space = board.get((xcounter - 1,y), LIMIT)
+			if space == None:
+				xcounter -= 1
+				moves.append((xcounter,y))
+			elif space != LIMIT and space.color == enemy:
+				xcounter -= 1
+				moves.append((xcounter,y))
+				left = True
+			else:
+				left = True
+		#copied from bishop
+		x,y = self.location[0], self.location[1]
+		enemy = "Black" if self.color == "White" else "White"
+		xcounter, ycounter = self.location[0], self.location[1]
+		upper_left, upper_right, lower_right, lower_left = False, False, False, False
+		while not upper_left:
+			space = board.get((xcounter - 1, ycounter + 1), LIMIT)
+			if space == None:
+				xcounter -= 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				upper_left = True
+			else:
+				upper_left = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not upper_right:
+			space = board.get((xcounter + 1, ycounter + 1), LIMIT)
+			if space == None:
+				xcounter += 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter += 1
+				moves.append((xcounter, ycounter))
+				upper_right = True
+			else:
+				upper_right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not lower_right:
+			space = board.get((xcounter + 1, ycounter - 1), LIMIT)
+			if space == None:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				lower_right = True
+			else:
+				lower_right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not lower_left:
+			space = board.get((xcounter - 1, ycounter - 1), LIMIT)
+			if space == None:
+				xcounter -= 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+			elif space != LIMIT and space.color == enemy:
+				xcounter -= 1
+				ycounter -= 1
+				moves.append((xcounter, ycounter))
+				lower_left = True
+			else:
+				lower_left = True
+		return moves
 
 class Rook(Piece):
 
 	def __init__(self, *args):
 		super(Rook, self).__init__(*args)
+
+	def calculate_moves(self, board):
+		x,y = self.location[0], self.location[1]
+		moves = []
+		enemy = "Black" if self.color == "White" else "White"
+		up, down, left, right = False, False, False, False
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not up:
+			space = board.get((x,ycounter + 1), LIMIT)
+			if space == None:
+				ycounter += 1
+				moves.append((x,ycounter))
+			elif space != LIMIT and space.color == enemy:
+				ycounter += 1
+				moves.append((x,ycounter))
+				up = True
+			else:
+				up = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not down:
+			space = board.get((x,ycounter - 1), LIMIT)
+			if space == None:
+				ycounter -= 1
+				moves.append((x,ycounter))
+			elif space != LIMIT and space.color == enemy:
+				ycounter -= 1
+				moves.append((x,ycounter))
+				down = True
+			else:
+				down = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not right:
+			space = board.get((xcounter + 1,y), LIMIT)
+			if space == None:
+				xcounter += 1
+				moves.append((xcounter,y))
+			elif space != LIMIT and space.color == enemy:
+				xcounter += 1
+				moves.append((xcounter,y))
+				right = True
+			else:
+				right = True
+		xcounter, ycounter = self.location[0], self.location[1]
+		while not left:
+			space = board.get((xcounter - 1,y), LIMIT)
+			if space == None:
+				xcounter -= 1
+				moves.append((xcounter,y))
+			elif space != LIMIT and space.color == enemy:
+				xcounter -= 1
+				moves.append((xcounter,y))
+				left = True
+			else:
+				left = True
+		return moves
+
 
 class Bishop(Piece):
 

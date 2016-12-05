@@ -103,5 +103,24 @@ class TestStringMethods(unittest.TestCase):
         piece = chess.Bishop(pieceLocation, 7, False, 'White', [])
         board[pieceLocation] = piece
         self.assertEqual(set(piece.calculate_moves(board)), set([spc1, spc2, spc3, spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13]))
+
+    def test_rook(self):
+        board = chess.Board().clear_board()
+        pieceLocation = (4,3)
+        spc1, spc2, spc3, spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13, spc14 = (3,3), (2,3), (1,3), (0,3),(4,2),(4,1),(4,0),(5,3),(6,3),(7,3),(4,4),(4,5),(4,6),(4,7)
+        piece = chess.Rook(pieceLocation, 6, False, 'White', [])
+        board[pieceLocation] = piece
+        self.assertEqual(set(piece.calculate_moves(board)), set([spc1, spc2, spc3, spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13, spc14]))
+
+    def test_queen(self):
+        board = chess.Board().clear_board()
+        pieceLocation = (4,3)
+        diag_spaces = [(5,4),(6,5),(7,6),(3,2),(2,1),(1,0),(3,4),(2,5),(1,6),(0,7),(5,2),(6,1),(7,0)]
+        horiz_spaces = [(3,3), (2,3), (1,3), (0,3),(4,2),(4,1),(4,0),(5,3),(6,3),(7,3),(4,4),(4,5),(4,6),(4,7)]
+        piece = chess.Queen(pieceLocation, 10, False, 'White', [])
+        board[pieceLocation] = piece
+        self.assertEqual(set(piece.calculate_moves(board)), set(diag_spaces + horiz_spaces))
+
+
 if __name__ == '__main__':
     unittest.main()
