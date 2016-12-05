@@ -73,6 +73,12 @@ class Board:
 			(7,7): Rook((7,7), 6, False, 'Black', [])
 		}
 
+	#To make testing easier
+	def clear_board(self):
+		for key in self.board:
+			self.board[key] = None
+		return self.board
+
 	def __getitem__(self,key):
 		self.board.setdefault(key,LIMIT)
 		return self.board[key]

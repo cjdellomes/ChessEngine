@@ -2,6 +2,10 @@ import unittest
 import chess
 
 class TestStringMethods(unittest.TestCase):
+    def test_clear_board(self):
+        board = chess.Board().clear_board()
+        for key in board:
+            self.assertEqual(board[key],None)
 
     def test_white_pawn(self):
         board = chess.Board()
@@ -65,6 +69,26 @@ class TestStringMethods(unittest.TestCase):
         board[(location)] = piece
         self.assertEqual(piece.calculate_moves(board),[])
 
+    def test_knight(self):
+        board = chess.Board().clear_board()
+        pieceLocation = (4,3)
+        spc1 = (2,4)
+        spc2 = (3,5)
+        spc3 = (5,5)
+        spc4 = (6,4)
+        spc5 = (6,2)
+        spc6 = (5,1)
+        spc7 = (3,1)
+        spc8 = (2,2)
+        piece = chess.Knight(pieceLocation, 5, False, 'White', [])
+        board[pieceLocation] = piece
+        self.assertEqual(piece.location, pieceLocation)
+        self.assertFalse(piece.has_moved)
+        self.assertEqual(piece.value,5)
+        self.assertTrue(isinstance(piece,chess.Knight))
+        self.assertEqual(piece.color,'White')
+        #Made into a set because order does not really matter -Peyton Cross
+        self.assertEqual(set(piece.calculate_moves(board)),set([spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8]))
         
 
 if __name__ == '__main__':
