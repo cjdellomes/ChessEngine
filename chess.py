@@ -128,6 +128,32 @@ class Knight(Piece):
 		x = self.location[0]
 		y = self.location[1]
 		moves = []
+		enemy = "Black" if self.color == "White" else "White"
+		spc1 = (x-2,y+1)
+		spc2 = (x+2, y-1)
+		spc3 = (x+1, y-2)
+		spc4 = (x-1, y+2)
+		spc5 = (x+2, y+1)
+		spc6 = (x+1, y+2)
+		spc7 = (x-2, y-1)
+		spc8 = (x-1, y-2)
+		if board[spc1] == None or board[spc1].color == enemy:
+			moves.append(spc1)
+		if board[spc2] == None or board[spc2].color == enemy:
+			moves.append(spc2)
+		if board[spc3] == None or board[spc3].color == enemy:
+			moves.append(spc3)
+		if board[spc4] == None or board[spc4].color == enemy:
+			moves.append(spc4)
+		if board[spc5] == None or board[spc5].color == enemy:
+			moves.append(spc5)
+		if board[spc6] == None or board[spc6].color == enemy:
+			moves.append(spc6)
+		if board[spc7] == None or board[spc7].color == enemy:
+			moves.append(spc7)
+		if board[spc8] == None or board[spc8].color == enemy:
+			moves.append(spc8)
+		return moves
 
 
 class Pawn(Piece):

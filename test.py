@@ -89,7 +89,10 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(piece.color,'White')
         #Made into a set because order does not really matter -Peyton Cross
         self.assertEqual(set(piece.calculate_moves(board)),set([spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8]))
-        
+        board[spc1] = chess.Pawn(spc1, 1, False, "Black", [])
+        self.assertEqual(set(piece.calculate_moves(board)),set([spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8]))
+        board[spc1] = chess.Pawn(spc1, 1, False, "White", [])
+        self.assertEqual(set(piece.calculate_moves(board)),set([spc2,spc3,spc4,spc5,spc6,spc7,spc8]))
 
 if __name__ == '__main__':
     unittest.main()
