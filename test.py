@@ -103,6 +103,10 @@ class TestStringMethods(unittest.TestCase):
         piece = chess.Bishop(pieceLocation, 7, False, 'White', [])
         board[pieceLocation] = piece
         self.assertEqual(set(piece.calculate_moves(board)), set([spc1, spc2, spc3, spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13]))
+        board[spc1] = chess.Rook(pieceLocation, 5, False, 'Black', [])
+        self.assertEqual(set(piece.calculate_moves(board)), set([spc1, spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13]))
+        board[spc1] = chess.Rook(pieceLocation, 5, False, 'White', [])
+        self.assertEqual(set(piece.calculate_moves(board)), set([spc4, spc5, spc6, spc7, spc8, spc9, spc10, spc11, spc12, spc13]))
 
     def test_rook(self):
         board = chess.Board().clear_board()
