@@ -1,4 +1,4 @@
-from collections import defaultdict
+
 LIMIT = "Out of bounds"
 class Board:
 
@@ -23,8 +23,8 @@ class Board:
 			(1,5): None,
 			(1,6): Pawn((1,6), 1, False, 'Black', [(1,5)]),
 			(1,7): Knight((1,7), 3, False, 'Black', [(0,5), (2,5)]),
-			(2,0): Bishop((2,0), 3, False, 'Black', []),
-			(2,1): Pawn((2,1), 1, False, 'Black', [(2,2)]),
+			(2,0): Bishop((2,0), 3, False, 'White', []),
+			(2,1): Pawn((2,1), 1, False, 'White', [(2,2)]),
 			(2,2): None,
 			(2,3): None,
 			(2,4): None,
@@ -84,7 +84,11 @@ class Board:
 		return self.board[key]
 
 	def __setitem__(self,key,value):
+		print("I'm modifying the board")
 		self.board[key] = value
+
+	def get_Board(self):
+		return self.board
 
 class Piece(object):
 
@@ -117,29 +121,30 @@ class King(Piece):
 		enemy = "Black" if self.color == "White" else "White"
 		up, down, left, right = (x, y + 1), (x, y - 1), (x - 1, y), (x + 1, y)
 		upper_left, upper_right, lower_right, lower_left = (x - 1, y + 1), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)
-		if board[up] == None or board[up].color == enemy:
-			moves.append(up)
-
-		if board[down] == None or board[down].color == enemy:
-			moves.append(down)
-
-		if board[left] == None or board[left].color == enemy:
-			moves.append(left)
-
-		if board[right] == None or board[right].color == enemy:
-			moves.append(right)
-
-		if board[upper_left] == None or board[upper_left] == enemy:
-			moves.append(upper_left)
-
-		if board[upper_right] == None or board[upper_right] == enemy:
-			moves.append(upper_right)
-
-		if board[lower_right] == None or board[lower_right] == enemy:
-			moves.append(lower_right)
-
-		if board[lower_left] == None or board[lower_left] == enemy:
-			moves.append(lower_left)
+		if board[up] != LIMIT:
+			if board[up] == None or board[up].color == enemy:
+				moves.append(up)
+		if board[down] != LIMIT:
+			if board[down] == None or board[down].color == enemy:
+				moves.append(down)
+		if board[left] != LIMIT:
+			if board[left] == None or board[left].color == enemy:
+				moves.append(left)
+		if board[right] != LIMIT:
+			if board[right] == None or board[right].color == enemy:
+				moves.append(right)
+		if board[upper_left] != LIMIT:
+			if board[upper_left] == None or board[upper_left] == enemy:
+				moves.append(upper_left)
+		if board[upper_right] != LIMIT:
+			if board[upper_right] == None or board[upper_right] == enemy:
+				moves.append(upper_right)
+		if board[lower_right] != LIMIT:
+			if board[lower_right] == None or board[lower_right] == enemy:
+				moves.append(lower_right)
+		if board[lower_left] != LIMIT:
+			if board[lower_left] == None or board[lower_left] == enemy:
+				moves.append(lower_left)
 
 		return moves
 
@@ -404,22 +409,30 @@ class Knight(Piece):
 		moves = []
 		enemy = "Black" if self.color == "White" else "White"
 		spc1, spc2, spc3, spc4, spc5,spc6, spc7, spc8 = (x-2,y+1), (x+2, y-1), (x+1, y-2), (x-1, y+2), (x+2, y+1), (x+1, y+2), (x-2, y-1), (x-1, y-2) 
-		if board[spc1] == None or board[spc1].color == enemy:
-			moves.append(spc1)
-		if board[spc2] == None or board[spc2].color == enemy:
-			moves.append(spc2)
-		if board[spc3] == None or board[spc3].color == enemy:
-			moves.append(spc3)
-		if board[spc4] == None or board[spc4].color == enemy:
-			moves.append(spc4)
-		if board[spc5] == None or board[spc5].color == enemy:
-			moves.append(spc5)
-		if board[spc6] == None or board[spc6].color == enemy:
-			moves.append(spc6)
-		if board[spc7] == None or board[spc7].color == enemy:
-			moves.append(spc7)
-		if board[spc8] == None or board[spc8].color == enemy:
-			moves.append(spc8)
+		if  board[spc1] != LIMIT:
+			if board[spc1] == None or board[spc1].color == enemy:
+				moves.append(spc1)
+		if board[spc2] != LIMIT: 
+			if board[spc2] == None or board[spc2].color == enemy:
+				moves.append(spc2)
+		if board[spc3] != LIMIT :
+			if board[spc3] == None or board[spc3].color == enemy:
+				moves.append(spc3)
+		if board[spc4] != LIMIT:
+			if board[spc4] == None or board[spc4].color == enemy:
+				moves.append(spc4)
+		if board[spc5] != LIMIT: 
+			if board[spc5] == None or board[spc5].color == enemy:
+				moves.append(spc5)
+		if board[spc6] != LIMIT: 
+			if board[spc6] == None or board[spc6].color == enemy:
+				moves.append(spc6)
+		if board[spc7] != LIMIT: 
+			if board[spc7] == None or board[spc7].color == enemy:
+				moves.append(spc7)
+		if board[spc8] != LIMIT: 
+			if board[spc8] == None or board[spc8].color == enemy:
+				moves.append(spc8)
 		return moves
 
 
@@ -434,6 +447,9 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
+			if board[(x, y + 1)] != None:
+				print("The space at " + str(x)+","+str(y + 1) + " is:")
+				print(board[(x, y + 1)])
 			if board[(x, y + 1)] == None:
 				moves.append((x, y + 1))
 				if not self.has_moved and board[(x, y + 2)] == None:
