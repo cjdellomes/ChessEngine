@@ -102,6 +102,15 @@ class King(Piece):
 		self.in_check = in_check
 		self.in_checkmate = in_checkmate
 
+	def in_check(self, board):
+		in_check = False
+		for space in board:
+			piece = board[space]
+			if piece != None:
+				if piece.moves != []:
+					in_check = True
+		return in_check
+
 	def calculate_moves(self, board):
 		x,y = self.location[0], self.location[1]
 		moves = []
