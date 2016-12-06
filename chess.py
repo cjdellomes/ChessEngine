@@ -102,14 +102,18 @@ class King(Piece):
 		self.in_check = in_check
 		self.in_checkmate = in_checkmate
 
-	def in_check(self, board):
+	def king_in_check(self, board):
 		in_check = False
+		enemy = "Black" if self.color == "White" else "White"
 		for space in board:
 			piece = board[space]
-			if piece != None:
-				if piece.moves != []:
+			if piece != None and self.location != piece.location:
+				if self.location in piece.moves and piece.color == enemy:
 					in_check = True
 		return in_check
+
+	def king_in_checkmate(self, board):
+		return self.king_in_check(board) and not self.calculate_moves(board)
 
 	def calculate_moves(self, board):
 		x,y = self.location[0], self.location[1]
@@ -117,29 +121,70 @@ class King(Piece):
 		enemy = "Black" if self.color == "White" else "White"
 		up, down, left, right = (x, y + 1), (x, y - 1), (x - 1, y), (x + 1, y)
 		upper_left, upper_right, lower_right, lower_left = (x - 1, y + 1), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)
+		next_board = board.copy()
 		if board[up] == None or board[up].color == enemy:
-			moves.append(up)
+			next_board[up] = self
+			next_board[self.location] = None
+			if not next_board[up].king_in_check(next_board):
+				moves.append(up)
+			else:
+				next_board = board
 
 		if board[down] == None or board[down].color == enemy:
-			moves.append(down)
+			next_board[down] = self
+			next_board[self.location] = None
+			if not next_board[down].king_in_check(next_board):
+				moves.append(down)
+			else:
+				next_board = board.copy()
 
 		if board[left] == None or board[left].color == enemy:
-			moves.append(left)
+			next_board[left] = self
+			next_board[self.location] = None
+			if not next_board[left].king_in_check(next_board):
+				moves.append(left)
+			else:
+				next_board = board.copy()
 
 		if board[right] == None or board[right].color == enemy:
-			moves.append(right)
+			next_board[right] = self
+			next_board[self.location] = None
+			if not next_board[right].king_in_check(next_board):
+				moves.append(right)
+			else:
+				next_board = board.copy()
 
 		if board[upper_left] == None or board[upper_left] == enemy:
-			moves.append(upper_left)
+			next_board[upper_left] = self
+			next_board[self.location] = None
+			if not next_board[upper_left].king_in_check(next_board):
+				moves.append(upper_left)
+			else:
+				next_board = board.copy()
 
 		if board[upper_right] == None or board[upper_right] == enemy:
-			moves.append(upper_right)
+			next_board[upper_right] = self
+			next_board[self.location] = None
+			if not next_board[upper_right].king_in_check(next_board):
+				moves.append(upper_right)
+			else:
+				next_board = board.copy()
 
 		if board[lower_right] == None or board[lower_right] == enemy:
-			moves.append(lower_right)
+			next_board[lower_right] = self
+			next_board[self.location] = None
+			if not next_board[lower_right].king_in_check(next_board):
+				moves.append(lower_right)
+			else:
+				next_board = board.copy()
 
 		if board[lower_left] == None or board[lower_left] == enemy:
-			moves.append(lower_left)
+			next_board[lower_left] = self
+			next_board[self.location] = None
+			if not next_board[lower_left].king_in_check(next_board):
+				moves.append(lower_left)
+			else:
+				next_board = board.copy()
 
 		return moves
 
