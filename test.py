@@ -126,6 +126,7 @@ class TestStringMethods(unittest.TestCase):
         pieceLocation = (4,3)
         surrounding_spaces = [(4,4),(4,2),(5,3),(3,3),(5,4),(3,4),(3,2),(5,2)]
         piece = chess.King(False, False, pieceLocation, 100, False, 'White', [])
+        board[pieceLocation] = piece
         self.assertFalse(piece.king_in_check(board))
         self.assertEqual(set(piece.calculate_moves(board)), set(surrounding_spaces))
 

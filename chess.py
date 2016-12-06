@@ -1,4 +1,5 @@
 from collections import defaultdict
+import copy
 LIMIT = "Out of bounds"
 class Board:
 
@@ -116,75 +117,90 @@ class King(Piece):
 		return self.king_in_check(board) and not self.calculate_moves(board)
 
 	def calculate_moves(self, board):
-		x,y = self.location[0], self.location[1]
 		moves = []
+		x,y = self.location[0], self.location[1]
 		enemy = "Black" if self.color == "White" else "White"
 		up, down, left, right = (x, y + 1), (x, y - 1), (x - 1, y), (x + 1, y)
 		upper_left, upper_right, lower_right, lower_left = (x - 1, y + 1), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)
-		next_board = board.copy()
+
+		next_board = copy.deepcopy(board)
+		self_copy = copy.deepcopy(self)
+		x2,y2 = self_copy.location[0], self_copy.location[1]
+
 		if board[up] == None or board[up].color == enemy:
-			next_board[up] = self
+			self_copy.location = (x2, y2 + 1)
+			next_board[up] = self_copy
 			next_board[self.location] = None
 			if not next_board[up].king_in_check(next_board):
 				moves.append(up)
-			else:
-				next_board = board
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[down] == None or board[down].color == enemy:
-			next_board[down] = self
+			self_copy.location = (x2, y2 - 1)
+			next_board[down] = self_copy
 			next_board[self.location] = None
 			if not next_board[down].king_in_check(next_board):
 				moves.append(down)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[left] == None or board[left].color == enemy:
-			next_board[left] = self
+			self_copy.location = (x2 - 1, y2)
+			next_board[left] = self_copy
 			next_board[self.location] = None
 			if not next_board[left].king_in_check(next_board):
 				moves.append(left)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[right] == None or board[right].color == enemy:
-			next_board[right] = self
+			self_copy.location = (x2 + 1, y2)
+			next_board[right] = self_copy
 			next_board[self.location] = None
 			if not next_board[right].king_in_check(next_board):
 				moves.append(right)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[upper_left] == None or board[upper_left] == enemy:
-			next_board[upper_left] = self
+			self_copy.location = (x2 - 1, y2 + 1)
+			next_board[upper_left] = self_copy
 			next_board[self.location] = None
 			if not next_board[upper_left].king_in_check(next_board):
 				moves.append(upper_left)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[upper_right] == None or board[upper_right] == enemy:
-			next_board[upper_right] = self
+			self_copy.location = (x2 + 1, y2 + 1)
+			next_board[upper_right] = self_copy
 			next_board[self.location] = None
 			if not next_board[upper_right].king_in_check(next_board):
 				moves.append(upper_right)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[lower_right] == None or board[lower_right] == enemy:
-			next_board[lower_right] = self
+			self_copy.location = (x2 + 1, y2 - 1)
+			next_board[lower_right] = self_copy
 			next_board[self.location] = None
 			if not next_board[lower_right].king_in_check(next_board):
 				moves.append(lower_right)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
 
 		if board[lower_left] == None or board[lower_left] == enemy:
-			next_board[lower_left] = self
+			self_copy.location = (x2 - 1, y2 - 1)
+			next_board[lower_left] = self_copy
 			next_board[self.location] = None
 			if not next_board[lower_left].king_in_check(next_board):
 				moves.append(lower_left)
-			else:
-				next_board = board.copy()
+			next_board = board.copy()
+			self_copy = copy.deepcopy(self)
+
+		print(moves)
+		print(" ")
 
 		return moves
 
