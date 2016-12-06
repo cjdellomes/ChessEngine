@@ -131,7 +131,24 @@ class TestStringMethods(unittest.TestCase):
         surrounding_spaces = [(4,4),(4,2),(5,3),(3,3),(5,4),(3,4),(3,2),(5,2)]
         piece = chess.King(False, False, pieceLocation, 100, False, 'White', [])
         board[pieceLocation] = piece
+        self.assertFalse(piece.king_in_check(board))
         self.assertEqual(set(piece.calculate_moves(board)), set(surrounding_spaces))
+
+        board[(7,7)] = chess.Pawn((7,7), 1, False, 'Black', [(7,6)])
+        self.assertFalse(piece.king_in_check(board))
+        self.assertEqual(set(piece.calculate_moves(board)), set(surrounding_spaces))
+
+        board[(4,4)] = chess.Queen((4,4), 10, False, 'Black', [])
+        board[(4,4)].moves = board[(4,4)].calculate_moves(board)
+        possible_moves = [(4,4), (3,2), (5,2)]
+        self.assertTrue(piece.king_in_check(board))
+        self.assertEqual(set(piece.calculate_moves(board)), set(possible_moves))
+
+        board[(4,2)] = chess.Queen((4,2), 10, False, 'Black', [])
+        board[(4,2)].moves = board[(4,2)].calculate_moves(board)
+        possible_moves = []
+        self.assertEqual(set(piece.calculate_moves(board)), set([]))
+        self.assertTrue(piece.king_in_checkmate(board))
 
 if __name__ == '__main__':
     unittest.main()
