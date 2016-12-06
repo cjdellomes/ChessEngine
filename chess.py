@@ -85,7 +85,6 @@ class Board:
 		return self.board[key]
 
 	def __setitem__(self,key,value):
-		print("I'm modifying the board")
 		self.board[key] = value
 
 	def get_Board(self):
@@ -202,11 +201,6 @@ class King(Piece):
 					moves.append(lower_left)
 				next_board = board.copy()
 				self_copy = copy.deepcopy(self)
-
-		print(moves)
-		print(" ")
-
-
 		return moves
 
 class Queen(Piece):
@@ -508,9 +502,6 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if board[(x, y + 1)] != None:
-				print("The space at " + str(x)+","+str(y + 1) + " is:")
-				print(board[(x, y + 1)])
 			if board[(x, y + 1)] == None:
 				moves.append((x, y + 1))
 				if not self.has_moved and board[(x, y + 2)] == None:

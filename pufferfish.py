@@ -5,14 +5,12 @@ from collections import defaultdict
 def greeting():
 	name = "Pufferfish"
 	description = "Dankest fish in the sea!"
-	return ("Hello I am %s, the %s. \n You go first! \n What is your first move?" % (name,description))
+	return ("Hello I am %s, the %s. \nYou go first!" % (name,description))
 
 def calculate_move_easy (board):
 	random_dict = {}
 	possible_keys = []
 	for key in board.keys():
-		#print("The key is " + str(key))
-		#print(board[key])
 		if board[key] != chess.LIMIT and board[key] != None and board[key].color == "Black":
 			possible_keys.append(key)
 			random_dict[key] = board[key].calculate_moves(board)
@@ -29,11 +27,7 @@ def calculate_move_easy (board):
 	board[random_new_move] = board[random_prev_key]
 	board[random_new_move].location = random_new_move
 	board[random_prev_key] = None
-	print("Moving ")
-	print(random_prev_key)
-	print("To")
-	print(random_new_move)
-	print
+	print("Moving " + str(random_prev_key) + " to " + str(random_new_move))
 	return random_prev_key, random_new_move, board
 
 def user_move (prev_coord,new_coord, board, user):
@@ -75,7 +69,6 @@ def main():
 			new_coord = raw_input("To what space? ")
 			x2 = ord(new_coord[0]) - 97
 			y2 = int(new_coord[1]) - 1
-			print(y2)
 			board, valid_move = user_move((x,y),(x2,y2),board, "Human")
 		comp_prev_move, comp_new_move, board = calculate_move_easy(board)
 		print(calculate_letter(comp_prev_move[0]) + str(comp_prev_move[1] + 1) + " to " + calculate_letter(comp_new_move[0]) + str(comp_new_move[1] + 1))
