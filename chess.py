@@ -102,6 +102,47 @@ class King(Piece):
 		self.in_check = in_check
 		self.in_checkmate = in_checkmate
 
+	def in_check(self, board):
+		in_check = False
+		for space in board:
+			piece = board[space]
+			if piece != None:
+				if piece.moves != []:
+					in_check = True
+		return in_check
+
+	def calculate_moves(self, board):
+		x,y = self.location[0], self.location[1]
+		moves = []
+		enemy = "Black" if self.color == "White" else "White"
+		up, down, left, right = (x, y + 1), (x, y - 1), (x - 1, y), (x + 1, y)
+		upper_left, upper_right, lower_right, lower_left = (x - 1, y + 1), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)
+		if board[up] == None or board[up].color == enemy:
+			moves.append(up)
+
+		if board[down] == None or board[down].color == enemy:
+			moves.append(down)
+
+		if board[left] == None or board[left].color == enemy:
+			moves.append(left)
+
+		if board[right] == None or board[right].color == enemy:
+			moves.append(right)
+
+		if board[upper_left] == None or board[upper_left] == enemy:
+			moves.append(upper_left)
+
+		if board[upper_right] == None or board[upper_right] == enemy:
+			moves.append(upper_right)
+
+		if board[lower_right] == None or board[lower_right] == enemy:
+			moves.append(lower_right)
+
+		if board[lower_left] == None or board[lower_left] == enemy:
+			moves.append(lower_left)
+
+		return moves
+
 class Queen(Piece):
 
 	def __init__(self, *args):
