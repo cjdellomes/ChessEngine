@@ -75,10 +75,11 @@ class Board(object):
 		}
 
 	#To make testing easier
+
+	# Returns just the object's dictionary, not the whole object
 	def clear_board(self):
 		for key in self.board:
 			self.board[key] = None
-		# Returns just the object's dictionary, not the whole object
 		return self.board
 
 	def __getitem__(self,key):
@@ -131,9 +132,9 @@ class King(Piece):
 	def king_in_check(self, board):
 		in_check = False
 		enemy = "Black" if self.color == "White" else "White"
-		for space in board:
-			piece = board[space]
-			if piece != None and self.location != piece.location:
+		for space in board.keys():
+			piece = board.get(space, LIMIT)
+			if piece != LIMIT and piece != None and self.location != piece.location and piece.value != 500:
 				piece.moves = piece.calculate_moves(board)
 				if self.location in piece.moves and piece.color == enemy:
 					in_check = True

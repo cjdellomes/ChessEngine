@@ -3,7 +3,7 @@ import chess
 
 class TestStringMethods(unittest.TestCase):
     def test_board(self):
-        board =chess.Board()
+        board = chess.Board()
         self.assertTrue(isinstance(board, chess.Board))
 
         board.board = board.clear_board()
@@ -20,14 +20,17 @@ class TestStringMethods(unittest.TestCase):
         empty_spc2 = (1,3)
         board[enemy_loc1] = chess.Pawn(enemy_loc1, 1, False, 'Black', [])
         board[enemy_loc2] = chess.Pawn(enemy_loc2, 1, False, 'Black', [])
+
         #testing initialization of object
         self.assertEqual(piece.location,(1,1))
         self.assertFalse(piece.has_moved)
         self.assertEqual(piece.value, 1)
         self.assertTrue(isinstance(piece,chess.Pawn))
         self.assertEqual(piece.color, "White")
+
         #testing moves
         self.assertEqual(piece.calculate_moves(board.get_board()), [empty_spc1,empty_spc2, enemy_loc1, enemy_loc2])
+
         #Note to self probably should change the object's location but not necessary for test
         board[empty_spc2] = board[enemy_loc1]
         board[enemy_loc1] = chess.Pawn(enemy_loc1, 1, False, 'White', [])
@@ -36,6 +39,7 @@ class TestStringMethods(unittest.TestCase):
         board[empty_spc1] = board[empty_spc2]
         board[empty_spc2] = None
         self.assertEqual(piece.calculate_moves(board.get_board()), [])
+
         #resetting board and testing board boundries
         board = chess.Board()
         location = (7,7)
@@ -60,6 +64,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(isinstance(piece,chess.Pawn))
         self.assertEqual(piece.color, "Black")
         self.assertEqual(piece.calculate_moves(board.get_board()), [empty_spc1,empty_spc2,enemy_loc1,enemy_loc2])
+
         #Note to self probably should change the object's location but not necessary for test
         board[empty_spc2] = board[enemy_loc1]
         board[enemy_loc1] = chess.Pawn(enemy_loc1, 1, False, 'Black', [])
@@ -68,6 +73,7 @@ class TestStringMethods(unittest.TestCase):
         board[empty_spc1] = board[empty_spc2]
         board[empty_spc2] = None
         self.assertEqual(piece.calculate_moves(board.get_board()), [])
+
         #resetting board and testing board boundries
         board = chess.Board()
         location = (0,0)
@@ -93,6 +99,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(piece.value,5)
         self.assertTrue(isinstance(piece,chess.Knight))
         self.assertEqual(piece.color,'White')
+
         #Made into a set because order does not really matter -Peyton Cross
         self.assertEqual(set(piece.calculate_moves(board)),set([spc1,spc2,spc3,spc4,spc5,spc6,spc7,spc8]))
         board[spc1] = chess.Pawn(spc1, 1, False, "Black", [])
