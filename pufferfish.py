@@ -57,7 +57,7 @@ def calculate_letter (number):
 
 def main():
 	print(greeting())
-	board = chess.Board().get_Board()
+	board = chess.Board().get_board()
 	board = defaultdict(lambda:chess.LIMIT, board)
 	checkmate = False
 	while not checkmate:
