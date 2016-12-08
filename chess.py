@@ -1,7 +1,7 @@
 from collections import defaultdict
 import copy
 LIMIT = "Out of bounds"
-class Board:
+class Board(object):
 
 	def __init__(self, board):
 		self.board = board
@@ -78,6 +78,7 @@ class Board:
 	def clear_board(self):
 		for key in self.board:
 			self.board[key] = None
+		# Returns just the object's dictionary, not the whole object
 		return self.board
 
 	def __getitem__(self,key):
@@ -523,9 +524,6 @@ class Pawn(Piece):
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			#print((x, y + 1))
-			#print(board.__getitem__((x, y + 1)))
-			print(board[(x, y + 1)])
 			if board.get((x, y + 1), LIMIT) != LIMIT and board[(x, y + 1)] == None:
 				moves.append((x, y + 1))
 				if not self.has_moved and board.get((x, y + 2), LIMIT) != LIMIT and board[(x, y + 2)] == None:
