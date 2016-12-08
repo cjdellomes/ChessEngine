@@ -14,6 +14,9 @@ class minimax_node:
 	def __gt__(self, other):
 		return self.value > other.value
 
+	def __eq__(self, other):
+		return self.value = other.value
+
 	def insert_children(self, children):
 		self.children.extend(children)
 
