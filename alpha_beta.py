@@ -7,6 +7,7 @@ infinite = math.inf
 counter = 0
 
 def alpha_beta(board, depth, alpha, beta):
+	# Uncomment this print to watch the function recurse
 	print((board, depth, alpha, beta))
 	global counter
 	counter += 1
@@ -25,95 +26,50 @@ def alpha_beta(board, depth, alpha, beta):
 		return (board.get_scores(), None, None)
 	else:
 		if board.player_turn == "White":
-			move_piece = None
+			best_piece = None
 			best_move = None
 			for piece_move_tuple in board.legal_moves():
-				piece = piece_move_tuple[0]
-				move = piece_move_tuple[1]
+				tuple_piece = piece_move_tuple[0]
+				tuple_move = piece_move_tuple[1]
 				new_position = copy.deepcopy(position)
-				new_position[piece] = copy.deepcopy(piece)
-				new_position[piece.location] = None
+				new_position[tuple_piece] = copy.deepcopy(tuple_piece)
+				new_position[tuple_piece.location] = None
 				new_board = copy.deepcopy(board)
 				new_board.board = new_position
 				new_board.player_turn = "Black"
-				score, move_piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
+				score, piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
 				if score > alpha:
 					alpha = score
+					best_piece = piece
 					best_move = move
 					if alpha >= beta:
 						break
-			return (alpha, move_piece, best_move)
+			return (alpha, best_piece, best_move)
 		elif board.player_turn == "Black":
-			move_piece = None
+			best_piece = None
 			best_move = None
 			for piece_move_tuple in board.legal_moves():
-				piece = piece_move_tuple[0]
-				move = piece_move_tuple[1]
+				tuple_piece = piece_move_tuple[0]
+				tuple_move = piece_move_tuple[1]
 				new_position = copy.deepcopy(position)
-				new_position[piece] = copy.deepcopy(piece)
-				new_position[piece.location] = None
+				new_position[tuple_piece] = copy.deepcopy(tuple_piece)
+				new_position[tuple_piece.location] = None
 				new_board = copy.deepcopy(board)
 				new_board.board = new_position
 				new_board.player_turn = "White"
-				score, move_piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
+				score, piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
 				if score > alpha:
 					beta = score
+					best_piece = piece
 					best_move = move
 					if alpha >= beta:
 						break
-			return (beta, move_piece, best_move)
-
-		# if board.player_turn == "White":
-		# 	move_piece = None
-		# 	best_move = None
-		# 	for space in position.keys():
-		# 		piece = position.get(space, LIMIT)
-		# 		print('piece: ' + str(piece))
-		# 		if piece != LIMIT and piece != None:
-		# 			new_position = copy.deepcopy(position)
-		# 			for move in piece.moves:
-		# 				print('move: ' + str(move))
-		# 				new_position[move] = copy.deepcopy(piece)
-		# 				new_position[piece.location] = None
-		# 				new_board = copy.deepcopy(board)
-		# 				new_board.board = new_position
-		# 				new_board.player_turn = "Black"
-		# 				score, move_piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
-		# 				if score > alpha: # White maximizes the score
-		# 					alpha = score
-		# 					best_move = move
-		# 					if alpha >= beta: # alpha beta cutoff
-		# 						break
-		# 	return (alpha, move_piece, best_move)
-		# elif board.player_turn == "Black":
-		# 	move_piece = None
-		# 	best_move = None
-		# 	for space in position.keys():
-		# 		piece = position.get(space, LIMIT)
-		# 		print('space: ' + str(piece))
-		# 		if piece != LIMIT and piece != None:
-		# 			new_position = copy.deepcopy(position)
-		# 			for move in piece.moves:
-		# 				print('move: ' + str(move))
-		# 				new_position[move] = copy.deepcopy(piece)
-		# 				new_position[piece.location] = None
-		# 				new_board = copy.deepcopy(board)
-		# 				new_board.board = new_position
-		# 				new_board.player_turn = "White"
-		# 				score, move_piece, move = alpha_beta(new_board, depth - 1, alpha, beta)
-		# 				if score < beta: # Black minimizes the score
-		# 					beta = score
-		# 					best_move = move
-		# 					if alpha >= beta: # alpha beta cutoff
-		# 						break
-		# 	return (beta, move_piece, best_move)
+			return (beta, best_piece, best_move)
 
 def run_alpha_beta():
 	start_time = time.time()
 	board = chess.Board()
 
-	print(alpha_beta(board, 3, -infinite, infinite))
+	print(alpha_beta(board, 2, -infinite, infinite))
 	print(time.time() - start_time)
 	print(counter)
-
-run_alpha_beta()

@@ -1,4 +1,6 @@
+import alpha_beta
 import chess
+import alpha_beta
 import random
 from collections import defaultdict
 
@@ -30,6 +32,16 @@ def calculate_move_easy (board):
 	print("Moving " + str(random_prev_key) + " to " + str(random_new_move))
 	return random_prev_key, random_new_move, board
 
+def calculate_computer_move (board):
+	best_score, best_piece, best_move = alpha_beta.alpha_beta(board, 4, -alpha_beta.infinite, alpha_beta.infinite)
+	if best_move == None:
+		return calculate_move_easy(board.board)
+	else:
+		board[best_move] = copy.deepcopy(best_piece)
+		board[best_piece.location] = None
+		print("Moving " + str(best_piece.location) + " to " + str(best_move))
+		return best_piece.location, best_move, board
+
 def user_move (prev_coord,new_coord, board, user):
 	print("Moving " + str (prev_coord) + " to " + str(new_coord))
 	valid_move = True
@@ -57,20 +69,22 @@ def calculate_letter (number):
 
 def main():
 	print(greeting())
-	board = chess.Board().get_board()
-	board = defaultdict(lambda:chess.LIMIT, board)
+	board = chess.Board()
+	position = board.get_board()
+	position = defaultdict(lambda:chess.LIMIT, position)
 	checkmate = False
 	while not checkmate:
 		valid_move = False
 		while not valid_move:
-			prev_coord = raw_input("What piece will you move? ")
+			prev_coord = input("What piece will you move? ")
 			x = ord(prev_coord[0]) - 97
 			y = int(prev_coord[1]) - 1
-			new_coord = raw_input("To what space? ")
+			new_coord = input("To what space? ")
 			x2 = ord(new_coord[0]) - 97
 			y2 = int(new_coord[1]) - 1
-			board, valid_move = user_move((x,y),(x2,y2),board, "Human")
-		comp_prev_move, comp_new_move, board = calculate_move_easy(board)
+			position, valid_move = user_move((x,y),(x2,y2),position, "Human")
+		board.board = position
+		comp_prev_move, comp_new_move, board = calculate_computer_move(board)
 		print(calculate_letter(comp_prev_move[0]) + str(comp_prev_move[1] + 1) + " to " + calculate_letter(comp_new_move[0]) + str(comp_new_move[1] + 1))
 
 
