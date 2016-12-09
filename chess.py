@@ -15,64 +15,64 @@ class Board(object):
 			(0,3): None,
 			(0,4): None,
 			(0,5): None,
-			(0,6): Pawn((0,6), 1, False, 'Black', [(0,5)]),
-			(0,7): Rook((0,7), 5, False, 'Black', []),
+			(0,6): Pawn((0,6), -1, False, 'Black', [(0,5)]),
+			(0,7): Rook((0,7), -5, False, 'Black', []),
 			(1,0): Knight((1,0), 3, False, 'White', [(0,2), (2,2)]),
 			(1,1): Pawn((1,1), 1, False, 'White', [(1,2)]),
 			(1,2): None,
 			(1,3): None,
 			(1,4): None,
 			(1,5): None,
-			(1,6): Pawn((1,6), 1, False, 'Black', [(1,5)]),
-			(1,7): Knight((1,7), 3, False, 'Black', [(0,5), (2,5)]),
+			(1,6): Pawn((1,6), -1, False, 'Black', [(1,5)]),
+			(1,7): Knight((1,7), -3, False, 'Black', [(0,5), (2,5)]),
 			(2,0): Bishop((2,0), 3, False, 'White', []),
 			(2,1): Pawn((2,1), 1, False, 'White', [(2,2)]),
 			(2,2): None,
 			(2,3): None,
 			(2,4): None,
 			(2,5): None,
-			(2,6): Pawn((2,6), 1, False, 'Black', [(2,5)]),
-			(2,7): Bishop((2,7), 3, False, 'Black', []),
+			(2,6): Pawn((2,6), -1, False, 'Black', [(2,5)]),
+			(2,7): Bishop((2,7), -3, False, 'Black', []),
 			(3,0): Queen((3,0), 9, False, 'White', []),
 			(3,1): Pawn((3,1), 1, False, 'White', [(3,2)]),
 			(3,2): None,
 			(3,3): None,
 			(3,4): None,
 			(3,5): None,
-			(3,6): Pawn((3,6), 1, False, 'Black', [(3,5)]),
-			(3,7): Queen((3,7), 1, False, 'Black', []),
+			(3,6): Pawn((3,6), -1, False, 'Black', [(3,5)]),
+			(3,7): Queen((3,7), -9, False, 'Black', []),
 			(4,0): King(False, False, (4,0), 500, False, 'White', []),
 			(4,1): Pawn((4,1), 1, False, 'White', [(4,2)]),
 			(4,2): None,
 			(4,3): None,
 			(4,4): None,
 			(4,5): None,
-			(4,6): Pawn((4,6), 1, False, 'Black', [(4,5)]),
-			(4,7): King(False, False, (4,7), 500, False, 'Black', []),
+			(4,6): Pawn((4,6), -1, False, 'Black', [(4,5)]),
+			(4,7): King(False, False, (4,7), -500, False, 'Black', []),
 			(5,0): Bishop((5,0), 3, False, 'White', []),
 			(5,1): Pawn((5,1), 1, False, 'White', [(5,2)]),
 			(5,2): None,
 			(5,3): None,
 			(5,4): None,
 			(5,5): None,
-			(5,6): Pawn((5,6), 1, False, 'Black', [(5,5)]),
-			(5,7): Bishop((5,7), 1, False, 'Black', []),
+			(5,6): Pawn((5,6), -1, False, 'Black', [(5,5)]),
+			(5,7): Bishop((5,7), -3, False, 'Black', []),
 			(6,0): Knight((6,0), 3, False, 'White', [(5,2), (7,2)]),
 			(6,1): Pawn((6,1), 1, False, 'White', [(6,2)]),
 			(6,2): None,
 			(6,3): None,
 			(6,4): None,
 			(6,5): None,
-			(6,6): Pawn((6,6), 1, False, 'Black', [(6,5)]),
-			(6,7): Knight((6,7), 1, False, 'Black', [(5,5), (7,5)]),
-			(7,0): Rook((7,0), 6, False, 'White', []),
+			(6,6): Pawn((6,6), -1, False, 'Black', [(6,5)]),
+			(6,7): Knight((6,7), -3, False, 'Black', [(5,5), (7,5)]),
+			(7,0): Rook((7,0), 5, False, 'White', []),
 			(7,1): Pawn((7,1), 1, False, 'White', [(7,2)]),
 			(7,2): None,
 			(7,3): None,
 			(7,4): None,
 			(7,5): None,
-			(7,6): Pawn((7,6), 1, False, 'Black', [(7,5)]),
-			(7,7): Rook((7,7), 6, False, 'Black', [])
+			(7,6): Pawn((7,6), -1, False, 'Black', [(7,5)]),
+			(7,7): Rook((7,7), -5, False, 'Black', [])
 		}
 		self.player_turn = "White"
 
@@ -113,6 +113,15 @@ class Board(object):
 					black_sum_value += piece.value
 		return white_sum_value + black_sum_value
 
+	def legal_moves(self):
+		legal_moves = []
+		for space in self.board:
+			piece = self.board.get(space, LIMIT)
+			if piece != LIMIT and piece != None:
+				for move in piece.moves:
+					legal_moves.append((piece, move))
+		return legal_moves
+
 class Piece(object):
 
 	def __init__(self, location = None, value = None, has_moved = None, color = None, moves = []):
@@ -137,7 +146,7 @@ class King(Piece):
 		enemy = "Black" if self.color == "White" else "White"
 		for space in board.keys():
 			piece = board.get(space, LIMIT)
-			if piece != LIMIT and piece != None and self.location != piece.location and piece.value != 500:
+			if piece != LIMIT and piece != None and self.location != piece.location and piece.value != 500 and piece.value != -500:
 				piece.moves = piece.calculate_moves(board)
 				if self.location in piece.moves and piece.color == enemy:
 					in_check = True

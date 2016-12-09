@@ -60,7 +60,7 @@ class TestStringMethods(unittest.TestCase):
         board[enemy_loc2] = chess.Pawn(enemy_loc2, 1, False, 'White', [])
         self.assertEqual(piece.location,(1,6))
         self.assertFalse(piece.has_moved)
-        self.assertEqual(piece.value, 1)
+        self.assertEqual(piece.value, -1)
         self.assertTrue(isinstance(piece,chess.Pawn))
         self.assertEqual(piece.color, "Black")
         self.assertEqual(piece.calculate_moves(board.get_board()), [empty_spc1,empty_spc2,enemy_loc1,enemy_loc2])
