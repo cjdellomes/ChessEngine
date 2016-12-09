@@ -166,6 +166,7 @@ class TestStringMethods(unittest.TestCase):
         board[(4,2)].moves = board[(4,2)].calculate_moves(board)
         possible_moves = []
         self.assertEqual(set(piece.calculate_moves(board)), set([]))
+        self.assertTrue(piece.king_in_check(board))
         self.assertTrue(piece.king_in_checkmate(board))
 
 if __name__ == '__main__':

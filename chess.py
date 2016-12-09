@@ -3,8 +3,9 @@ import copy
 LIMIT = "Out of bounds"
 class Board(object):
 
-	def __init__(self, board):
+	def __init__(self, board, player_turn = "White"):
 		self.board = board
+		self.player_turn = player_turn
 
 	def __init__(self):
 		self.board = {
@@ -73,6 +74,7 @@ class Board(object):
 			(7,6): Pawn((7,6), 1, False, 'Black', [(7,5)]),
 			(7,7): Rook((7,7), 6, False, 'Black', [])
 		}
+		self.player_turn = "White"
 
 	#To make testing easier
 
@@ -108,7 +110,7 @@ class Board(object):
 				white_sum_value += piece.value
 			if piece.color == "Black":
 				black_sum_value += piece.value
-		return (white_sum_value, black_sum_value)
+		return white_sum_value + black_sum_value
 
 class Piece(object):
 
