@@ -48,7 +48,7 @@ class Board(object):
 			(4,4): None,
 			(4,5): None,
 			(4,6): Pawn((4,6), 1, False, 'Black', [(4,5)]),
-			(4,7): King(False, False, (4,7), 1, False, 'Black', []),
+			(4,7): King(False, False, (4,7), 500, False, 'Black', []),
 			(5,0): Bishop((5,0), 3, False, 'White', []),
 			(5,1): Pawn((5,1), 1, False, 'White', [(5,2)]),
 			(5,2): None,
@@ -97,19 +97,20 @@ class Board(object):
 	def get_score(self, color):
 		piece_sum_value = 0
 		for space in self.board:
-			piece = board[space]
-			if piece.color == color:
+			piece = self.board.get(space, LIMIT)
+			if piece != LIMIT and piece.color == color:
 				piece_sum_value += piece.value
 		return piece_sum_value
 
 	def get_scores(self):
 		white_sum_value, black_sum_value = 0, 0
 		for space in self.board:
-			piece = board[space]
-			if piece.color == "White":
-				white_sum_value += piece.value
-			if piece.color == "Black":
-				black_sum_value += piece.value
+			piece = self.board.get(space, LIMIT)
+			if piece != LIMIT and piece != None:
+				if piece.color == "White":
+					white_sum_value += piece.value
+				if piece.color == "Black":
+					black_sum_value += piece.value
 		return white_sum_value + black_sum_value
 
 class Piece(object):
@@ -489,28 +490,28 @@ class Knight(Piece):
 		moves = []
 		enemy = "Black" if self.color == "White" else "White"
 		spc1, spc2, spc3, spc4, spc5,spc6, spc7, spc8 = (x-2,y+1), (x+2, y-1), (x+1, y-2), (x-1, y+2), (x+2, y+1), (x+1, y+2), (x-2, y-1), (x-1, y-2) 
-		if  board[spc1] != LIMIT:
+		if  board.get(spc1, LIMIT) != LIMIT:
 			if board[spc1] == None or board[spc1].color == enemy:
 				moves.append(spc1)
-		if board[spc2] != LIMIT: 
+		if board.get(spc2, LIMIT) != LIMIT: 
 			if board[spc2] == None or board[spc2].color == enemy:
 				moves.append(spc2)
-		if board[spc3] != LIMIT :
+		if board.get(spc3, LIMIT) != LIMIT :
 			if board[spc3] == None or board[spc3].color == enemy:
 				moves.append(spc3)
-		if board[spc4] != LIMIT:
+		if board.get(spc4, LIMIT) != LIMIT:
 			if board[spc4] == None or board[spc4].color == enemy:
 				moves.append(spc4)
-		if board[spc5] != LIMIT: 
+		if board.get(spc5, LIMIT) != LIMIT: 
 			if board[spc5] == None or board[spc5].color == enemy:
 				moves.append(spc5)
-		if board[spc6] != LIMIT: 
+		if board.get(spc6, LIMIT) != LIMIT: 
 			if board[spc6] == None or board[spc6].color == enemy:
 				moves.append(spc6)
-		if board[spc7] != LIMIT: 
+		if board.get(spc7, LIMIT) != LIMIT: 
 			if board[spc7] == None or board[spc7].color == enemy:
 				moves.append(spc7)
-		if board[spc8] != LIMIT: 
+		if board.get(spc8, LIMIT) != LIMIT: 
 			if board[spc8] == None or board[spc8].color == enemy:
 				moves.append(spc8)
 		return moves

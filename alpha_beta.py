@@ -4,20 +4,18 @@ LIMIT = chess.LIMIT
 
 def alpha_beta(board, depth, alpha, beta):
 	print((board, depth, alpha, beta))
-	white_king_space, black_king_space = (0, 0), (0, 0)
+	white_king_space, black_king_space = (), ()
 	position = copy.deepcopy(board.board)
 
 	# Finds the coordinate of both kings
 	for space in position.keys():
-		print(space)
-		print(position.get(space))
 		if position.get(space, LIMIT) != LIMIT and position.get(space) != None and  position.get(space, LIMIT).value == 500:
 			if position[space].color == "White":
 				white_king_space = space
 			if position[space].color == "Black":
 				black_king_space = space
 
-	if (depth == 0 or (position[white_king_space].king_in_checkmate(position) or position[black_king_space].king_in_checkmate())):
+	if (depth == 0 or (position[white_king_space].king_in_checkmate(position) or position[black_king_space].king_in_checkmate(position))):
 		return (board.get_scores(), None, None)
 	else:
 		if board.player_turn == "White":
@@ -25,7 +23,7 @@ def alpha_beta(board, depth, alpha, beta):
 			best_move = None
 			for space in position.keys():
 				piece = position.get(space, LIMIT)
-				if piece != LIMIT:
+				if piece != LIMIT and piece != None:
 					new_position = copy.deepcopy(position)
 					for move in piece.moves:
 						new_position[move] = copy.deepcopy(piece)
@@ -45,7 +43,7 @@ def alpha_beta(board, depth, alpha, beta):
 			best_move = None
 			for space in position.keys():
 				piece = position.get(space, LIMIT)
-				if piece != LIMIT:
+				if piece != LIMIT and piece != None:
 					new_position = copy.deepcopy(position)
 					for move in piece.moves:
 						new_position[move] = copy.deepcopy(piece)
@@ -61,4 +59,4 @@ def alpha_beta(board, depth, alpha, beta):
 								break
 			return (beta, move_piece, best_move)
 
-alpha_beta(chess.Board(), 5, -1000, 1000)
+print(alpha_beta(chess.Board(), 1, -1000, 1000))
