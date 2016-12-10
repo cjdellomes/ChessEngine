@@ -177,7 +177,6 @@ class TestStringMethods(unittest.TestCase):
         board.board[(1,7)] = chess.Rook((1,7), 5, False, 'White', [])
         board.board[(1,6)] = chess.Queen((1,6), 9, False, 'White', [])
         board.board[(7,7)] = chess.King(False, False, (7,7), 500, False, 'White', [])
-        print(alpha_beta.alpha_beta(board, 2, -alpha_beta.infinite, alpha_beta.infinite))
 
 if __name__ == '__main__':
     unittest.main()

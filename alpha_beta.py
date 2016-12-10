@@ -8,7 +8,7 @@ counter = 0
 
 def alpha_beta(board, depth, alpha, beta):
 	# Uncomment this print to watch the function recurse
-	print((board, depth, alpha, beta))
+	# print((board, depth, alpha, beta))
 	global counter
 	counter += 1
 	position = copy.deepcopy(board.board)
@@ -34,7 +34,6 @@ def alpha_beta(board, depth, alpha, beta):
 					alpha = score
 					best_piece = piece
 					best_move = move
-					print(alpha, best_piece, best_move)
 					if alpha >= beta:
 						break
 			return (alpha, best_piece, best_move)
@@ -53,10 +52,8 @@ def alpha_beta(board, depth, alpha, beta):
 					beta = score
 					best_piece = piece
 					best_move = move
-					print(beta, best_piece, best_move)
 					if alpha >= beta:
 						break
-			print(beta, best_piece, best_move)
 			return (beta, best_piece, best_move)
 
 def run_alpha_beta():
