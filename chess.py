@@ -113,12 +113,21 @@ class Board(object):
 					black_sum_value += piece.value
 		return white_sum_value + black_sum_value
 
-	# Need to set it so only looks through certain color pieces
 	def legal_moves(self):
 		legal_moves = []
 		for space in self.board:
 			piece = self.board.get(space, LIMIT)
 			if piece != LIMIT and piece != None:
+				piece.moves = piece.calculate_moves(self.board)
+				for move in piece.moves:
+					legal_moves.append((piece, move))
+		return legal_moves
+
+	def legal_moves(self, color):
+		legal_moves = []
+		for space in self.board:
+			piece = self.board.get(space, LIMIT)
+			if piece != LIMIT and piece != None and piece.color == color:
 				piece.moves = piece.calculate_moves(self.board)
 				for move in piece.moves:
 					legal_moves.append((piece, move))

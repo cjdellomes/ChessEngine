@@ -79,15 +79,19 @@ def main():
 	while not checkmate:
 		valid_move = False
 		while not valid_move:
-			prev_coord = input("What piece will you move? ")
+			prev_coord = raw_input("What piece will you move? ")
 			x = ord(prev_coord[0]) - 97
 			y = int(prev_coord[1]) - 1
-			new_coord = input("To what space? ")
+			new_coord = raw_input("To what space? ")
 			x2 = ord(new_coord[0]) - 97
 			y2 = int(new_coord[1]) - 1
 			position, valid_move = user_move((x,y),(x2,y2),position, "Human")
 		comp_prev_move, comp_new_move, position = calculate_computer_move(position)
 		print(calculate_letter(comp_prev_move[0]) + str(comp_prev_move[1] + 1) + " to " + calculate_letter(comp_new_move[0]) + str(comp_new_move[1] + 1))
+		checkmate_board = chess.Board()
+		checkmate_board.board = position
+		king_locations = checkmate_board.king_locations()
+		checkmate = checkmate_board.board[king_locations[0]].king_in_checkmate or checkmate_board.board[king_locations[1]].king_in_checkmate
 
 if __name__ == "__main__":
 	main()

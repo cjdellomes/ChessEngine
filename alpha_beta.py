@@ -3,7 +3,7 @@ import copy
 import time
 import math
 LIMIT = chess.LIMIT
-infinite = math.inf
+infinite = float('inf')
 counter = 0
 
 def alpha_beta(board, depth, alpha, beta):
@@ -17,10 +17,10 @@ def alpha_beta(board, depth, alpha, beta):
 	if (depth == 0 or (position[white_king_space].king_in_checkmate(position) or position[black_king_space].king_in_checkmate(position))):
 		return (board.get_scores(), None, None)
 	else:
+		best_piece = None
+		best_move = None
 		if board.player_turn == "White":
-			best_piece = None
-			best_move = None
-			for piece_move_tuple in board.legal_moves():
+			for piece_move_tuple in board.legal_moves("White"):
 				tuple_piece = piece_move_tuple[0]
 				tuple_move = piece_move_tuple[1]
 				new_position = copy.deepcopy(position)
@@ -39,9 +39,7 @@ def alpha_beta(board, depth, alpha, beta):
 						break
 			return (alpha, best_piece, best_move)
 		else:
-			best_piece = None
-			best_move = None
-			for piece_move_tuple in board.legal_moves():
+			for piece_move_tuple in board.legal_moves("Black"):
 				tuple_piece = piece_move_tuple[0]
 				tuple_move = piece_move_tuple[1]
 				new_position = copy.deepcopy(position)
