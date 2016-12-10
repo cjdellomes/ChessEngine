@@ -122,6 +122,19 @@ class Board(object):
 					legal_moves.append((piece, move))
 		return legal_moves
 
+	def king_locations(self):
+		white_king_space, black_king_space = (), ()
+		position = copy.deepcopy(self.board)
+
+		# Finds the coordinate of both kings
+		for space in position.keys():
+			if position.get(space, LIMIT) != LIMIT and position.get(space) != None and (position.get(space, LIMIT).value == 500 or position.get(space, LIMIT).value == -500):
+				if position[space].color == "White":
+					white_king_space = space
+				if position[space].color == "Black":
+					black_king_space = space
+		return (white_king_space, black_king_space)
+
 class Piece(object):
 
 	def __init__(self, location = None, value = None, has_moved = None, color = None, moves = []):

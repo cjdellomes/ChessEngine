@@ -1,2 +1,2 @@
 # ChessEngine
-LMU CMSI 485 Chess Engine
+Chess Engine Final Project for LMU CMSI 485 AI

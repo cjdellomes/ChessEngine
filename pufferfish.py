@@ -1,6 +1,6 @@
 import alpha_beta
 import chess
-import alpha_beta
+import copy
 import random
 from collections import defaultdict
 
@@ -33,9 +33,11 @@ def calculate_move_easy (board):
 	return random_prev_key, random_new_move, board
 
 def calculate_computer_move (board):
-	best_score, best_piece, best_move = alpha_beta.alpha_beta(board, 4, -alpha_beta.infinite, alpha_beta.infinite)
+	this_board = chess.Board()
+	this_board.board = board;
+	best_score, best_piece, best_move = alpha_beta.alpha_beta(this_board, 4, -alpha_beta.infinite, alpha_beta.infinite)
 	if best_move == None:
-		return calculate_move_easy(board.board)
+		return calculate_move_easy(board)
 	else:
 		board[best_move] = copy.deepcopy(best_piece)
 		board[best_piece.location] = None
@@ -83,15 +85,8 @@ def main():
 			x2 = ord(new_coord[0]) - 97
 			y2 = int(new_coord[1]) - 1
 			position, valid_move = user_move((x,y),(x2,y2),position, "Human")
-		board.board = position
-		comp_prev_move, comp_new_move, board = calculate_computer_move(board)
+		comp_prev_move, comp_new_move, position = calculate_computer_move(position)
 		print(calculate_letter(comp_prev_move[0]) + str(comp_prev_move[1] + 1) + " to " + calculate_letter(comp_new_move[0]) + str(comp_new_move[1] + 1))
-
-
-
-
-	
-
 
 if __name__ == "__main__":
 	main()
