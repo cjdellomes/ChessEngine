@@ -11,7 +11,7 @@ def alpha_beta(board, depth, alpha, beta):
 	# print((board, depth, alpha, beta))
 	global counter
 	counter += 1
-	position = copy.deepcopy(board.board)
+	position = copy.deepcopy(board.position)
 	white_king_space, black_king_space = board.king_locations()
 
 	if (depth == 0 or (position[white_king_space].king_in_checkmate(position) or position[black_king_space].king_in_checkmate(position))):

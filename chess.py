@@ -3,12 +3,12 @@ import copy
 LIMIT = "Out of bounds"
 class Board(object):
 
-	def __init__(self, board, player_turn = "White"):
-		self.board = board
+	def __init__(self, position, player_turn = "White"):
+		self.position = position
 		self.player_turn = player_turn
 
 	def __init__(self):
-		self.board = {
+		self.position = {
 			(0,0): Rook((0,0), 5, False, 'White', []),
 			(0,1): Pawn((0,1), 1, False, 'White', [(0,2)]),
 			(0,2): None,
@@ -80,32 +80,32 @@ class Board(object):
 
 	# Returns just the object's dictionary, not the whole object
 	def clear_board(self):
-		for key in self.board:
-			self.board[key] = None
-		return self.board
+		for key in self.position:
+			self.position[key] = None
+		return self.position
 
 	def __getitem__(self,key):
-		self.board.setdefault(key,LIMIT)
-		return self.board[key]
+		self.position.setdefault(key,LIMIT)
+		return self.position[key]
 
 	def __setitem__(self,key,value):
-		self.board[key] = value
+		self.position[key] = value
 
-	def get_board(self):
-		return self.board
+	def get_position(self):
+		return self.position
 
 	def get_score(self, color):
 		piece_sum_value = 0
-		for space in self.board:
-			piece = self.board.get(space, LIMIT)
+		for space in self.position:
+			piece = self.position.get(space, LIMIT)
 			if piece != LIMIT and piece.color == color:
 				piece_sum_value += piece.value
 		return piece_sum_value
 
 	def get_scores(self):
 		white_sum_value, black_sum_value = 0, 0
-		for space in self.board:
-			piece = self.board.get(space, LIMIT)
+		for space in self.position:
+			piece = self.position.get(space, LIMIT)
 			if piece != LIMIT and piece != None:
 				if piece.color == "White":
 					white_sum_value += piece.value
@@ -115,27 +115,27 @@ class Board(object):
 
 	def legal_moves(self):
 		legal_moves = []
-		for space in self.board:
-			piece = self.board.get(space, LIMIT)
+		for space in self.position:
+			piece = self.position.get(space, LIMIT)
 			if piece != LIMIT and piece != None:
-				piece.moves = piece.calculate_moves(self.board)
+				piece.moves = piece.calculate_moves(self.position)
 				for move in piece.moves:
 					legal_moves.append((piece, move))
 		return legal_moves
 
 	def legal_moves(self, color):
 		legal_moves = []
-		for space in self.board:
-			piece = self.board.get(space, LIMIT)
+		for space in self.position:
+			piece = self.position.get(space, LIMIT)
 			if piece != LIMIT and piece != None and piece.color == color:
-				piece.moves = piece.calculate_moves(self.board)
+				piece.moves = piece.calculate_moves(self.position)
 				for move in piece.moves:
 					legal_moves.append((piece, move))
 		return legal_moves
 
 	def king_locations(self):
 		white_king_space, black_king_space = (), ()
-		position = copy.deepcopy(self.board)
+		position = copy.deepcopy(self.position)
 
 		# Finds the coordinate of both kings
 		for space in position.keys():
@@ -155,7 +155,7 @@ class Piece(object):
 		self.color = color
 		self.moves = moves
 
-	def calculate_moves(self, board):
+	def calculate_moves(self, position):
 		raise NotImplementedError("Calculate moves has not been implemented yet")
 
 class King(Piece):
@@ -165,101 +165,101 @@ class King(Piece):
 		self.in_check = in_check
 		self.in_checkmate = in_checkmate
 
-	def king_in_check(self, board):
+	def king_in_check(self, position):
 		in_check = False
 		enemy = "Black" if self.color == "White" else "White"
-		for space in board.keys():
-			piece = board.get(space, LIMIT)
+		for space in position.keys():
+			piece = position.get(space, LIMIT)
 			if piece != LIMIT and piece != None and self.location != piece.location and piece.value != 500 and piece.value != -500:
-				piece.moves = piece.calculate_moves(board)
+				piece.moves = piece.calculate_moves(position)
 				if self.location in piece.moves and piece.color == enemy:
 					in_check = True
 		return in_check
 
-	def king_in_checkmate(self, board):
-		return self.king_in_check(board) and not self.calculate_moves(board)
+	def king_in_checkmate(self, position):
+		return self.king_in_check(position) and not self.calculate_moves(position)
 
-	def calculate_moves(self, board):
+	def calculate_moves(self, position):
 		moves = []
 		x,y = self.location[0], self.location[1]
 		enemy = "Black" if self.color == "White" else "White"
 		up, down, left, right = (x, y + 1), (x, y - 1), (x - 1, y), (x + 1, y)
 		upper_left, upper_right, lower_right, lower_left = (x - 1, y + 1), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)
 
-		next_board = copy.deepcopy(board)
+		next_board = copy.deepcopy(position)
 		self_copy = copy.deepcopy(self)
 		x2,y2 = self_copy.location[0], self_copy.location[1]
-		if board.get(up, LIMIT) != LIMIT:
-			if board[up] == None or board[up].color == enemy:
+		if position.get(up, LIMIT) != LIMIT:
+			if position[up] == None or position[up].color == enemy:
 				self_copy.location = (x2, y2 + 1)
 				next_board[up] = self_copy
 				next_board[self.location] = None
 				if not next_board[up].king_in_check(next_board):
 					moves.append(up)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(down, LIMIT) != LIMIT:
-			if board[down] == None or board[down].color == enemy:
+		if position.get(down, LIMIT) != LIMIT:
+			if position[down] == None or position[down].color == enemy:
 				self_copy.location = (x2, y2 - 1)
 				next_board[down] = self_copy
 				next_board[self.location] = None
 				if not next_board[down].king_in_check(next_board):
 					moves.append(down)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(left, LIMIT) != LIMIT:
-			if board[left] == None or board[left].color == enemy:
+		if position.get(left, LIMIT) != LIMIT:
+			if position[left] == None or position[left].color == enemy:
 				self_copy.location = (x2 - 1, y2)
 				next_board[left] = self_copy
 				next_board[self.location] = None
 				if not next_board[left].king_in_check(next_board):
 					moves.append(left)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(right, LIMIT) != LIMIT:
-			if board[right] == None or board[right].color == enemy:
+		if position.get(right, LIMIT) != LIMIT:
+			if position[right] == None or position[right].color == enemy:
 				self_copy.location = (x2 + 1, y2)
 				next_board[right] = self_copy
 				next_board[self.location] = None
 				if not next_board[right].king_in_check(next_board):
 					moves.append(right)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(upper_left, LIMIT) != LIMIT:
-			if board[upper_left] == None or board[upper_left] == enemy:
+		if position.get(upper_left, LIMIT) != LIMIT:
+			if position[upper_left] == None or position[upper_left] == enemy:
 				self_copy.location = (x2 - 1, y2 + 1)
 				next_board[upper_left] = self_copy
 				next_board[self.location] = None
 				if not next_board[upper_left].king_in_check(next_board):
 					moves.append(upper_left)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(upper_right, LIMIT) != LIMIT:
-			if board[upper_right] == None or board[upper_right] == enemy:
+		if position.get(upper_right, LIMIT) != LIMIT:
+			if position[upper_right] == None or position[upper_right] == enemy:
 				self_copy.location = (x2 + 1, y2 + 1)
 				next_board[upper_right] = self_copy
 				next_board[self.location] = None
 				if not next_board[upper_right].king_in_check(next_board):
 					moves.append(upper_right)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(lower_right, LIMIT) != LIMIT:
-			if board.get(lower_right, LIMIT) == None or board[lower_right] == enemy:
+		if position.get(lower_right, LIMIT) != LIMIT:
+			if position.get(lower_right, LIMIT) == None or position[lower_right] == enemy:
 				self_copy.location = (x2 + 1, y2 - 1)
 				next_board[lower_right] = self_copy
 				next_board[self.location] = None
 				if not next_board[lower_right].king_in_check(next_board):
 					moves.append(lower_right)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
-		if board.get(lower_left, LIMIT) != LIMIT:
-			if board[lower_left] == None or board[lower_left] == enemy:
+		if position.get(lower_left, LIMIT) != LIMIT:
+			if position[lower_left] == None or position[lower_left] == enemy:
 				self_copy.location = (x2 - 1, y2 - 1)
 				next_board[lower_left] = self_copy
 				next_board[self.location] = None
 				if not next_board[lower_left].king_in_check(next_board):
 					moves.append(lower_left)
-				next_board = copy.deepcopy(board)
+				next_board = copy.deepcopy(position)
 				self_copy = copy.deepcopy(self)
 		return moves
 
@@ -518,35 +518,35 @@ class Knight(Piece):
 	def __init__(self, *args):
 		super(Knight, self).__init__(*args)
 
-	def calculate_moves(self, board):
+	def calculate_moves(self, position):
 		x = self.location[0]
 		y = self.location[1]
 		moves = []
 		enemy = "Black" if self.color == "White" else "White"
 		spc1, spc2, spc3, spc4, spc5,spc6, spc7, spc8 = (x-2,y+1), (x+2, y-1), (x+1, y-2), (x-1, y+2), (x+2, y+1), (x+1, y+2), (x-2, y-1), (x-1, y-2) 
-		if  board.get(spc1, LIMIT) != LIMIT:
-			if board[spc1] == None or board[spc1].color == enemy:
+		if  position.get(spc1, LIMIT) != LIMIT:
+			if position[spc1] == None or position[spc1].color == enemy:
 				moves.append(spc1)
-		if board.get(spc2, LIMIT) != LIMIT: 
-			if board[spc2] == None or board[spc2].color == enemy:
+		if position.get(spc2, LIMIT) != LIMIT: 
+			if position[spc2] == None or position[spc2].color == enemy:
 				moves.append(spc2)
-		if board.get(spc3, LIMIT) != LIMIT :
-			if board[spc3] == None or board[spc3].color == enemy:
+		if position.get(spc3, LIMIT) != LIMIT :
+			if position[spc3] == None or position[spc3].color == enemy:
 				moves.append(spc3)
-		if board.get(spc4, LIMIT) != LIMIT:
-			if board[spc4] == None or board[spc4].color == enemy:
+		if position.get(spc4, LIMIT) != LIMIT:
+			if position[spc4] == None or position[spc4].color == enemy:
 				moves.append(spc4)
-		if board.get(spc5, LIMIT) != LIMIT: 
-			if board[spc5] == None or board[spc5].color == enemy:
+		if position.get(spc5, LIMIT) != LIMIT: 
+			if position[spc5] == None or position[spc5].color == enemy:
 				moves.append(spc5)
-		if board.get(spc6, LIMIT) != LIMIT: 
-			if board[spc6] == None or board[spc6].color == enemy:
+		if position.get(spc6, LIMIT) != LIMIT: 
+			if position[spc6] == None or position[spc6].color == enemy:
 				moves.append(spc6)
-		if board.get(spc7, LIMIT) != LIMIT: 
-			if board[spc7] == None or board[spc7].color == enemy:
+		if position.get(spc7, LIMIT) != LIMIT: 
+			if position[spc7] == None or position[spc7].color == enemy:
 				moves.append(spc7)
-		if board.get(spc8, LIMIT) != LIMIT: 
-			if board[spc8] == None or board[spc8].color == enemy:
+		if position.get(spc8, LIMIT) != LIMIT: 
+			if position[spc8] == None or position[spc8].color == enemy:
 				moves.append(spc8)
 		return moves
 
@@ -556,27 +556,27 @@ class Pawn(Piece):
 	def __init__(self, *args):
 		super(Pawn, self).__init__(*args)
 
-	def calculate_moves(self, board):
+	def calculate_moves(self, position):
 		x = self.location[0]
 		y = self.location[1]
 		moves = []
 		# if ! self.has_moved:
 		if self.color == "White":
-			if board.get((x, y + 1), LIMIT) != LIMIT and board[(x, y + 1)] == None:
+			if position.get((x, y + 1), LIMIT) != LIMIT and position[(x, y + 1)] == None:
 				moves.append((x, y + 1))
-				if not self.has_moved and board.get((x, y + 2), LIMIT) != LIMIT and board[(x, y + 2)] == None:
+				if not self.has_moved and position.get((x, y + 2), LIMIT) != LIMIT and position[(x, y + 2)] == None:
 					moves.append((x, y + 2))
-			if board.get((x + 1, y + 1), LIMIT) != LIMIT and board[(x + 1, y + 1)] != None and board[(x + 1, y + 1)].color == "Black":
+			if position.get((x + 1, y + 1), LIMIT) != LIMIT and position[(x + 1, y + 1)] != None and position[(x + 1, y + 1)].color == "Black":
 				moves.append((x + 1, y + 1))
-			if board.get((x - 1, y + 1), LIMIT) != LIMIT and board[(x - 1, y + 1)] != None and board[(x - 1, y + 1)].color == "Black":
+			if position.get((x - 1, y + 1), LIMIT) != LIMIT and position[(x - 1, y + 1)] != None and position[(x - 1, y + 1)].color == "Black":
 				moves.append((x - 1, y + 1))
 		else:
-			if board.get((x, y - 1), LIMIT) != LIMIT and board[(x, y - 1)] == None:
+			if position.get((x, y - 1), LIMIT) != LIMIT and position[(x, y - 1)] == None:
 				moves.append((x , y - 1))
-				if not self.has_moved and board.get((x, y - 2), LIMIT) != LIMIT and board[(x, y - 2)] == None:
+				if not self.has_moved and position.get((x, y - 2), LIMIT) != LIMIT and position[(x, y - 2)] == None:
 					moves.append((x, y - 2))
-			if board.get((x - 1, y - 1), LIMIT) != LIMIT and board[(x - 1, y - 1)] != None and board[(x - 1, y - 1)].color == "White":
+			if position.get((x - 1, y - 1), LIMIT) != LIMIT and position[(x - 1, y - 1)] != None and position[(x - 1, y - 1)].color == "White":
 				moves.append((x - 1, y - 1))
-			if board.get((x + 1, y - 1), LIMIT) != LIMIT and board[(x + 1, y - 1)] != None and board[(x + 1, y - 1)].color == "White":
+			if position.get((x + 1, y - 1), LIMIT) != LIMIT and position[(x + 1, y - 1)] != None and position[(x + 1, y - 1)].color == "White":
 				moves.append((x + 1, y - 1))
 		return moves

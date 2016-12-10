@@ -36,8 +36,9 @@ def calculate_move_easy (board):
 
 def calculate_computer_move (board):
 	this_board = chess.Board()
-	this_board.board = board;
+	this_board.position = board;
 	best_score, best_piece, best_move = alpha_beta.alpha_beta(this_board, 2, -alpha_beta.infinite, alpha_beta.infinite)
+	# If there is no discernable best move, make a random one
 	if best_move == None:
 		return calculate_move_easy(board)
 	else:
@@ -76,7 +77,7 @@ def calculate_letter (number):
 def main():
 	print(greeting())
 	board = chess.Board()
-	position = board.get_board()
+	position = board.get_position()
 	position = defaultdict(lambda:chess.LIMIT, position)
 	checkmate = False
 	while not checkmate:
@@ -92,9 +93,9 @@ def main():
 		comp_prev_move, comp_new_move, position = calculate_computer_move(position)
 		print(calculate_letter(comp_prev_move[0]) + str(comp_prev_move[1] + 1) + " to " + calculate_letter(comp_new_move[0]) + str(comp_new_move[1] + 1))
 		checkmate_board = chess.Board()
-		checkmate_board.board = copy.deepcopy(position)
+		checkmate_board.position = copy.deepcopy(position)
 		king_locations = checkmate_board.king_locations()
-		checkmate = checkmate_board.board[king_locations[0]].king_in_checkmate(checkmate_board.board) or checkmate_board.board[king_locations[1]].king_in_checkmate(checkmate_board.board)
+		checkmate = checkmate_board.position[king_locations[0]].king_in_checkmate(checkmate_board.position) or checkmate_board.position[king_locations[1]].king_in_checkmate(checkmate_board.position)
 
 if __name__ == "__main__":
 	main()
