@@ -170,13 +170,5 @@ class TestStringMethods(unittest.TestCase):
         self.assertTrue(piece.king_in_check(board))
         self.assertTrue(piece.king_in_checkmate(board))
 
-    def test_alpha_beta(self):
-        board = chess.Board()
-        board.position = board.clear_board()
-        board.position[(0,0)] = chess.King(False, False, (0,0), -500, False, 'Black', [])
-        board.position[(1,7)] = chess.Rook((1,7), 5, False, 'White', [])
-        board.position[(1,6)] = chess.Queen((1,6), 9, False, 'White', [])
-        board.position[(7,7)] = chess.King(False, False, (7,7), 500, False, 'White', [])
-
 if __name__ == '__main__':
     unittest.main()
