@@ -10,6 +10,7 @@ def greeting():
 	return ("Hello I am %s, the %s. \nYou go first!" % (name,description))
 
 def calculate_move_easy (board):
+	print("Random move mdae")
 	random_dict = {}
 	possible_keys = []
 	for key in board.keys():
@@ -35,7 +36,7 @@ def calculate_move_easy (board):
 def calculate_computer_move (board):
 	this_board = chess.Board()
 	this_board.board = board;
-	best_score, best_piece, best_move = alpha_beta.alpha_beta(this_board, 4, -alpha_beta.infinite, alpha_beta.infinite)
+	best_score, best_piece, best_move = alpha_beta.alpha_beta(this_board, 2, -alpha_beta.infinite, alpha_beta.infinite)
 	if best_move == None:
 		return calculate_move_easy(board)
 	else:

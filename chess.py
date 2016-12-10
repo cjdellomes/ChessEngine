@@ -113,11 +113,13 @@ class Board(object):
 					black_sum_value += piece.value
 		return white_sum_value + black_sum_value
 
+	# Need to set it so only looks through certain color pieces
 	def legal_moves(self):
 		legal_moves = []
 		for space in self.board:
 			piece = self.board.get(space, LIMIT)
 			if piece != LIMIT and piece != None:
+				piece.moves = piece.calculate_moves(self.board)
 				for move in piece.moves:
 					legal_moves.append((piece, move))
 		return legal_moves
@@ -232,14 +234,15 @@ class King(Piece):
 					moves.append(upper_right)
 				next_board = copy.deepcopy(board)
 				self_copy = copy.deepcopy(self)
-		if board.get(lower_right, LIMIT) == None or board[lower_right] == enemy:
-			self_copy.location = (x2 + 1, y2 - 1)
-			next_board[lower_right] = self_copy
-			next_board[self.location] = None
-			if not next_board[lower_right].king_in_check(next_board):
-				moves.append(lower_right)
-			next_board = copy.deepcopy(board)
-			self_copy = copy.deepcopy(self)
+		if board.get(lower_right, LIMIT) != LIMIT:
+			if board.get(lower_right, LIMIT) == None or board[lower_right] == enemy:
+				self_copy.location = (x2 + 1, y2 - 1)
+				next_board[lower_right] = self_copy
+				next_board[self.location] = None
+				if not next_board[lower_right].king_in_check(next_board):
+					moves.append(lower_right)
+				next_board = copy.deepcopy(board)
+				self_copy = copy.deepcopy(self)
 		if board.get(lower_left, LIMIT) != LIMIT:
 			if board[lower_left] == None or board[lower_left] == enemy:
 				self_copy.location = (x2 - 1, y2 - 1)

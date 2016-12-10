@@ -34,10 +34,11 @@ def alpha_beta(board, depth, alpha, beta):
 					alpha = score
 					best_piece = piece
 					best_move = move
+					print(alpha, best_piece, best_move)
 					if alpha >= beta:
 						break
 			return (alpha, best_piece, best_move)
-		elif board.player_turn == "Black":
+		else:
 			best_piece = None
 			best_move = None
 			for piece_move_tuple in board.legal_moves():
@@ -54,8 +55,10 @@ def alpha_beta(board, depth, alpha, beta):
 					beta = score
 					best_piece = piece
 					best_move = move
+					print(beta, best_piece, best_move)
 					if alpha >= beta:
 						break
+			print(beta, best_piece, best_move)
 			return (beta, best_piece, best_move)
 
 def run_alpha_beta():

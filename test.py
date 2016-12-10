@@ -1,5 +1,6 @@
 import unittest
 import chess
+import alpha_beta
 
 class TestStringMethods(unittest.TestCase):
     def test_board(self):
@@ -168,6 +169,15 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(set(piece.calculate_moves(board)), set([]))
         self.assertTrue(piece.king_in_check(board))
         self.assertTrue(piece.king_in_checkmate(board))
+
+    def test_alpha_beta(self):
+        board = chess.Board()
+        board.board = board.clear_board()
+        board.board[(0,0)] = chess.King(False, False, (0,0), -500, False, 'Black', [])
+        board.board[(1,7)] = chess.Rook((1,7), 5, False, 'White', [])
+        board.board[(1,6)] = chess.Queen((1,6), 9, False, 'White', [])
+        board.board[(7,7)] = chess.King(False, False, (7,7), 500, False, 'White', [])
+        print(alpha_beta.alpha_beta(board, 2, -10000, 10000))
 
 if __name__ == '__main__':
     unittest.main()
